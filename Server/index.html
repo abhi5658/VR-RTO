@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Socket io client</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+
+  var data = {	"u" : 0,
+  				"d" : 0,
+  				"l" : 0,
+  				"r" : 0
+  			};
+  document.onkeydown = function(e) {
+    switch (e.keyCode) {
+        case 37:
+            // alert('left');
+            data.l=1;
+            document.getElementById("left").innerHTML = "left : " + data.l;
+            break;
+        case 38:
+            // alert('up');
+            data.u=1;
+			document.getElementById("up").innerHTML = "up : " + data.u;
+            break;
+        case 39:
+            // alert('right');
+            data.r =1;
+            document.getElementById("right").innerHTML = "right : " + data.r;
+            break;
+        case 40:
+            // alert('down');
+            data.d=1;
+            document.getElementById("down").innerHTML = "down : " + data.d;
+            break;
+    }
+    // alert(''+JSON.stringify(data));
+    if(e.keyCode==37 || e.keyCode==38 || e.keyCode==39 || e.keyCode==40)
+            socket.emit('keydata',data);
+    
+};
+document.onkeyup = function(e) {
+    switch (e.keyCode) {
+        case 37:
+            // alert('left');
+            data.l=0;
+            document.getElementById("left").innerHTML = "left : " + data.l;
+            break;
+        case 38:
+            // alert('up');
+            data.u=0;
+			document.getElementById("up").innerHTML = "up : " + data.u;
+            break;
+        case 39:
+            // alert('right');
+            data.r =0;
+            document.getElementById("right").innerHTML = "right : " + data.r;
+            break;
+        case 40:
+            // alert('down');
+            data.d=0;
+            document.getElementById("down").innerHTML = "down : " + data.d;
+            break;
+    }
+    // alert(''+JSON.stringify(data));
+    if(e.keyCode==37 || e.keyCode==38 || e.keyCode==39 || e.keyCode==40)
+    socket.emit('keydata',data);
+    
+   
+};
+	
+	socket.on('datafromserver',function(data){
+		 document.getElementById("server").innerHTML = "1";//"up : "+ data.up + "down : "+ data.down + "left :" + data.left + "right" +data.right;
+	});
+
+
+	socket.on('connect', function(){
+		 document.getElementById("server").innerHTML = "Server connected";
+	});
+
+	socket.on('disconnect', function(){
+		document.getElementById("server").innerHTML = "Server disconnected";
+	});
+
+	socket.on('datarec', function(convertedData){
+		document.getElementById("H").innerHTML = "H : "+convertedData.H;
+		document.getElementById("V").innerHTML = "V : "+ convertedData.V;
+	});
+
+</script>
+<body>
+	<h1> Socket io is here !!! </h1>
+	<p id="up">up : 0</p>
+	<p id="down">down : 0</p>
+	<p id="right">right : 0</p>
+	<p id="left">left : 0</p>
+
+	<p id="server"> </p>
+	<p></p>
+	<p id="H">H : 0</p>
+	<p id="V">V : 0</p>
+</body>
+</html>
