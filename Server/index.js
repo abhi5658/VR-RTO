@@ -1,6 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var path = require('path');
 
 var cordinates = {
 	"u" : 0,
@@ -51,11 +52,12 @@ function convert(posVal, negVal, cType)
 
 
 app.get('/', function(req, res){
-	res.sendFile('D:/Practice/node'+'/index.html');
+	res.sendFile(path.join(__dirname + '/index.html'));
+	// res.sendFile('/index.html');
 });
 
 app.get('/chat', function(req, res){
-	res.sendFile('D:/Practice/node'+'/chat.html');
+	res.sendFile(path.join(__dirname + '/chat.html'));
 });
 
 io.on('connection', function(socket){
